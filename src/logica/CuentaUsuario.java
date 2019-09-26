@@ -1,35 +1,16 @@
 
 package logica;
+import java.io.Serializable;
 
-import java.io.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class CuentaUsuario implements Serializable{
-	//Atributos
-	
-	/**
-	 * Atributo que almacena el nombre de la cuenta de usuario 
-	 */
+
 	
 	private String user;
-	
-	/**
-	 * Atributo que almacena la imagen de la cuenta de usuario 
-	 */
-	
 	private ImageIcon perfil;
-	
-	/**
-	 * Atributo que almacena la contraseña de la cuenta de usuario 
-	 */
-	
 	private String pwd;
-	
-	/**
-	 * Atributo que almacena la cantidad de inicios de la cuenta de usuario 
-	 */
-	
 	private int ingresos;
 	
 	
@@ -38,14 +19,12 @@ public class CuentaUsuario implements Serializable{
 	 * constructor parametrico
 	 * @param u identificador usuario
 	 */
-	public CuentaUsuario(String u) {
+	public CuentaUsuario(String u){
 		
 		this.perfil = new ImageIcon(CuentaUsuario.class.getResource("/recursos/icono-user.png"));
 		this.user = u;
 		this.ingresos=0;
-		if(!cargarDatos()) {
-			this.pwd = "qwerty123";	
-		}
+		this.pwd = "qwerty123";	
 		
 	}
 	
@@ -115,30 +94,6 @@ public class CuentaUsuario implements Serializable{
 	
 	public String getUser() {
 		return user;
-	}
-
-	
-	public boolean cargarDatos() {
-		try {
-			CuentaUsuario temp;
-			
-			FileInputStream fin= new FileInputStream("./data/" + this.user + ".bin");
-			ObjectInputStream in = new ObjectInputStream(fin);
-			temp= (CuentaUsuario) in.readObject();
-			this.user = temp.user;
-			this.pwd = temp.pwd;
-			this.ingresos = temp.ingresos;
-			this.perfil = temp.perfil;
-			in.close();
-			fin.close();
-			
-		
-			return true;
-			
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-			return false;
-		}
 	}
 
 }

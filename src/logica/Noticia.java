@@ -1,28 +1,15 @@
 package logica;
 
-public class Noticia{
+import java.io.Serializable;
+
+public class Noticia implements Serializable{
 	//Atributos
 	
-	/**
-	 * Atributo que almacena el titulo de la noticia 
-	 */
+	
 	private String titulo;
-
-	/**
-	 * Atributo que almacena el url de la noticia 
-	 */
 	private String dirEnlace;
-	/**
-	 * Atributo que almacena la descripcion de la noticia 
-	 */
 	private String descripcion;
-	/**
-	 * Atributo que almacena el nombre del portal web donde se extrae la noticia 
-	 */
 	private String fuente;
-	/**
-	 * Atributo que almacena la categoria de la noticia 
-	 */
 	private String categoria;
 	
 	// Metodos

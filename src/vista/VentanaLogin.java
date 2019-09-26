@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class VentanaU extends JFrame implements ActionListener{
+public class VentanaLogin extends JFrame implements ActionListener{
 
 	//Atributos de clase
 	private JPanel contentPane;
@@ -38,7 +38,7 @@ public class VentanaU extends JFrame implements ActionListener{
 	/**
 	 * Create the Frame
 	 */
-	public VentanaU() {
+	public VentanaLogin() {
 		
 		JOptionPane.showMessageDialog(null,"Cargando...Por favor Espere");
 		
@@ -129,10 +129,10 @@ public class VentanaU extends JFrame implements ActionListener{
 		
 		
 		btnIngresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnIngresar.setRolloverIcon(new ImageIcon(VentanaU.class.getResource("/recursos/btnLoginPress.png")));
-		btnIngresar.setPressedIcon(new ImageIcon(VentanaU.class.getResource("/recursos/btnLoginSel.png")));
+		btnIngresar.setRolloverIcon(new ImageIcon(VentanaLogin.class.getResource("/recursos/btnLoginPress.png")));
+		btnIngresar.setPressedIcon(new ImageIcon(VentanaLogin.class.getResource("/recursos/btnLoginSel.png")));
 		btnIngresar.setContentAreaFilled(false);
-		btnIngresar.setIcon(new ImageIcon(VentanaU.class.getResource("/recursos/btnLogin.png")));
+		btnIngresar.setIcon(new ImageIcon(VentanaLogin.class.getResource("/recursos/btnLogin.png")));
 		btnIngresar.setBorder(null);
 		btnIngresar.addActionListener(this);
 		btnIngresar.setFont(new Font("Arial", Font.BOLD, 13));
@@ -201,10 +201,10 @@ public class VentanaU extends JFrame implements ActionListener{
 		btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInfo.setBounds(444, 11, 32, 32);
 		panel_1.add(btnInfo);
-		btnInfo.setRolloverIcon(new ImageIcon(VentanaU.class.getResource("/recursos/infoPress.png")));
+		btnInfo.setRolloverIcon(new ImageIcon(VentanaLogin.class.getResource("/recursos/infoPress.png")));
 		btnInfo.setBorder(null);
 		btnInfo.setContentAreaFilled(false);
-		btnInfo.setIcon(new ImageIcon(VentanaU.class.getResource("/recursos/info.png")));
+		btnInfo.setIcon(new ImageIcon(VentanaLogin.class.getResource("/recursos/info.png")));
 		btnInfo.addActionListener(this);
 		
 		boolean exito = cargarDatos();
@@ -253,7 +253,6 @@ public class VentanaU extends JFrame implements ActionListener{
 			pwdContrasea.setText(null);
 			VentanaPrincipal v= new VentanaPrincipal(user, noticias);
 			v.setVisible(true);
-			this.setVisible(false);
 			
 		}else {
 			JOptionPane.showMessageDialog(null,"Contraseña o usuario incorrecto");
@@ -321,6 +320,7 @@ public class VentanaU extends JFrame implements ActionListener{
 			txtFsf.setText(user.getUser());
 			lblIngresos.setText("Ingresos: "+user.getIngresos());
 			btnSiguiente.setEnabled(true);
+			this.guardarDatos();
 			
 		}
 	}
@@ -371,7 +371,7 @@ public class VentanaU extends JFrame implements ActionListener{
 	/**
 	 * Metodo que elimina todas las cuentas de usuario
 	 */
-	private void eliminarT() {
+	private void eliminarUsuarios() {
 		int s = JOptionPane.showConfirmDialog(null, "¿Desea eliminar todos los usuarios?",
 				"Confirmación",JOptionPane.YES_NO_OPTION);
 		if(s==JOptionPane.YES_OPTION) {
@@ -379,7 +379,7 @@ public class VentanaU extends JFrame implements ActionListener{
 			txtFsf.setText(null);
 			pwdContrasea.setText(null);
 			lblIngresos.setText(null);
-			logo.setIcon(new ImageIcon(VentanaU.class.getResource("/recursos/icono-user.png")));
+			logo.setIcon(new ImageIcon(VentanaLogin.class.getResource("/recursos/icono-user.png")));
 			
 		}
 	}
@@ -402,7 +402,7 @@ public class VentanaU extends JFrame implements ActionListener{
 		else if(e.getSource() == btnInfo )
 			this.info();
 		else if(e.getSource() == btnEliminarLista )
-			this.eliminarT();
+			this.eliminarUsuarios();
 		else
 			this.eliminarUsuario();
 		

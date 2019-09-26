@@ -20,7 +20,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 	private JLabel lblFoto;
 	private JButton btnUser;
 	private JButton btnVerFavoritos;
-	private JButton btnCambiar;
+	private JButton btnCambiarPwd;
 	private JButton btnFoto;
 	private JButton btnSalir;
 	private FileNameExtensionFilter nPerfil;
@@ -41,8 +41,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 	private JPanel pnlDeportes;
 	private JPanel pnlBotones;
 	private JButton btnActualizar;
-	private ArrayList<Noticia> fav;
-	private JLabel nNoticias;
+	private ArrayList<Noticia> listaFavoritos;
+	private JLabel numNoticias;
 	private RecolectorNoticias noticias;
 	
 	//Metodos
@@ -140,17 +140,17 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		lblUser.setBounds(35, 138, 98, 14);
 		pnlMenu.add(lblUser);
 		
-		btnCambiar = new JButton("Cambiar clave");
-		btnCambiar.setBackground(new java.awt.Color(0, 153, 204));
-		btnCambiar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-		btnCambiar.setForeground(new java.awt.Color(255, 255, 255));
-		btnCambiar.setBorder(null);
-		btnCambiar.setContentAreaFilled(false);
-		btnCambiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-		btnCambiar.setOpaque(true);
-		btnCambiar.setBounds(0, 220, 169, 41);
-		btnCambiar.addActionListener(this);
-		pnlMenu.add(btnCambiar);
+		btnCambiarPwd = new JButton("Cambiar clave");
+		btnCambiarPwd.setBackground(new java.awt.Color(0, 153, 204));
+		btnCambiarPwd.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+		btnCambiarPwd.setForeground(new java.awt.Color(255, 255, 255));
+		btnCambiarPwd.setBorder(null);
+		btnCambiarPwd.setContentAreaFilled(false);
+		btnCambiarPwd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		btnCambiarPwd.setOpaque(true);
+		btnCambiarPwd.setBounds(0, 220, 169, 41);
+		btnCambiarPwd.addActionListener(this);
+		pnlMenu.add(btnCambiarPwd);
 		
 		
 		btnUser = new JButton("");
@@ -253,21 +253,21 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		btnEntret.addActionListener(this);
 		btnDeportes.addActionListener(this);
 		
-		nNoticias = new JLabel();
-		nNoticias.setHorizontalAlignment(SwingConstants.CENTER);
-		nNoticias.setBounds(181, 400, 125, 23);
-		panel.add(nNoticias);
-		nNoticias.setVisible(false);
+		numNoticias = new JLabel();
+		numNoticias.setHorizontalAlignment(SwingConstants.CENTER);
+		numNoticias.setBounds(181, 400, 125, 23);
+		panel.add(numNoticias);
+		numNoticias.setVisible(false);
 		
 		this.visualizarNoticias();
 		
-		boolean exito = cargarDatos();
+		boolean exito = cargarFavoritos();
 		if(!exito ) {
 			//instanciar la lista de favoritos
-			fav = new ArrayList();
+			listaFavoritos = new ArrayList();
 		}
 		pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiDeportes().size()));
-		nNoticias.setText("Noticias guardadas: "+ fav.size());
+		numNoticias.setText("Noticias guardadas: "+ listaFavoritos.size());
 		
 	}
 	
@@ -319,8 +319,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		btnOcultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(nNoticias.isVisible()) {
-					fav.remove(n);
+				if(numNoticias.isVisible()) {
+					listaFavoritos.remove(n);
 					actualizarFav();
 				}
 				else {
@@ -336,7 +336,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Noticia aux= n;
-				fav.add(aux);
+				listaFavoritos.add(aux);
 				JOptionPane.showMessageDialog(null,"¡Añadida a favoritos!");
 			}
 		});
@@ -381,8 +381,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		for(Noticia n: noticias.getNotiTec()) {
 			pnlTec.add(this.retornarNoticia(n));
 		}
-		
-		
 	
 	}
 	
@@ -402,7 +400,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		this.pnlPolitica.setVisible(false);
 		this.pnlTec.setVisible(false);
 		this.pnlFav.setVisible(false);
-		this.nNoticias.setVisible(false);
+		this.numNoticias.setVisible(false);
 	}
 	
 	
@@ -427,15 +425,16 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 	/**
 	 * Metodo que permite cambiar la contraseña de un usuario
 	 */
-	public void cambiar() {
+	public void cambiarPwd() {
 		
 		String a= JOptionPane.showInputDialog("Nueva Contraseña:");
 		String an= JOptionPane.showInputDialog("Confirmar Contraseña:");
 					
-		if(user.cambiarPwd(a, an))
+		if(user.cambiarPwd(a, an)) {
 			JOptionPane.showMessageDialog(this,"Contraseña cambiada exitosamente!");
-		else
-			JOptionPane.showMessageDialog(null, "Inicia sesion primero", null, JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(null, "Intentalo de nuevo", null, JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 	
 	/**
@@ -461,89 +460,49 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 		this.ocultarPnls();
 		this.pnlFav.setVisible(true);
 		pnlFav.removeAll();
-		for(Noticia n: fav) {
+		for(Noticia n: listaFavoritos) {
 			pnlFav.add(this.retornarNoticia(n));
 		}
-		pnlContenedor.setPreferredSize(new Dimension(480, 158*fav.size()));
+		pnlContenedor.setPreferredSize(new Dimension(480, 158*listaFavoritos.size()));
 		pnlFav.updateUI();
 		
-		nNoticias.setText("Noticias guardadas: "+ fav.size());
-		nNoticias.setVisible(true);
+		numNoticias.setText("Noticias guardadas: "+ listaFavoritos.size());
+		numNoticias.setVisible(true);
 	}
 	
 	public void salir() {
-		guardarDatos();
-		this.setVisible(false);
-		VentanaU v =new VentanaU();
-		v.setVisible(true);
-	}
-	
-	/**
-	 * Metodo que ejecuta los eventos al presionar los botones
-	 */
-	public void actionPerformed(ActionEvent e) {
-		
-		if(e.getSource() == btnSalir) {	
-			this.salir();
-		}
-		else if(e.getSource() == btnCambiar)
-			this.cambiar();
-	
-		else if(e.getSource()== btnFoto)
-			this.editarImg();
-		else if(e.getSource()== btnUser)
-			this.desplegar();
-		else if(e.getSource()== btnFavoritos) 
-			this.actualizarFav();
-			
-		else if(e.getSource()== btnDeportes) {
-			this.ocultarPnls();
-			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiDeportes().size()));
-			this.pnlDeportes.setVisible(true);
-		}
-		else if(e.getSource()== btnPolitica) {
-			this.ocultarPnls();
-			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiPolitica().size()));
-			this.pnlPolitica.setVisible(true);
-		}
-		else if(e.getSource()== btnEntret) {
-			this.ocultarPnls();
-			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiEntret().size()));
-			this.pnlEntret.setVisible(true);
-		}
-		else if(e.getSource()== btnTec) {
-			this.ocultarPnls();
-			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiTec().size()));
-			this.pnlTec.setVisible(true);
-		}
-		else if(e.getSource()== btnActualizar) {
-			this.actualizar();
+		if(guardarFavoritos()){
+			this.setVisible(false);
 		}
 	}
-	public boolean guardarDatos() {
+	
+	public boolean guardarFavoritos() {
 		try {
 			FileOutputStream fout= new FileOutputStream("./data/fav_"+ user.getUser() +".bin");
 			ObjectOutputStream out = new ObjectOutputStream(fout);
-			out.writeObject(fav);
+			out.writeObject(listaFavoritos);
 			out.close();
 			fout.close();
+			System.out.println("Datos guardados");
 			return true;
 			
 		}catch(Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("aqui"+ e.getMessage());
 			return false;
 		}
 	}
-	public boolean cargarDatos() {
+	
+	
+	public boolean cargarFavoritos() {
 		try {
 			
 			FileInputStream fin= new FileInputStream("./data/fav_"+ user.getUser() +".bin");
 			ObjectInputStream in = new ObjectInputStream(fin);
-			fav = (ArrayList<Noticia>) in.readObject();
-			if(fav.size()==0) {
+			listaFavoritos = (ArrayList<Noticia>) in.readObject();
+			if(listaFavoritos.size()==0) {
 				in.close();
 				fin.close();
-				JOptionPane.showMessageDialog(null, "Error de lectura: Sin datos " );
+				JOptionPane.showMessageDialog(null, "Bienvenido" );
 				return false;
 			}
 			else {
@@ -557,5 +516,55 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
 			return false;
 		}
 	}
-}
 
+
+	
+	/**
+	 * Metodo que ejecuta los eventos al presionar los botones
+	 */
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() == btnSalir) 
+			this.salir();
+		
+		else if(e.getSource() == btnCambiarPwd)
+			this.cambiarPwd();
+	
+		else if(e.getSource()== btnFoto)
+			this.editarImg();
+		
+		else if(e.getSource()== btnUser)
+			this.desplegar();
+		
+		else if(e.getSource()== btnFavoritos || e.getSource()==btnVerFavoritos) 
+			this.actualizarFav();
+			
+		else if(e.getSource()== btnDeportes) {
+			this.ocultarPnls();
+			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiDeportes().size()));
+			this.pnlDeportes.setVisible(true);
+		}
+		
+		else if(e.getSource()== btnPolitica) {
+			this.ocultarPnls();
+			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiPolitica().size()));
+			this.pnlPolitica.setVisible(true);
+		}
+		
+		else if(e.getSource()== btnEntret) {
+			this.ocultarPnls();
+			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiEntret().size()));
+			this.pnlEntret.setVisible(true);
+		}
+		
+		else if(e.getSource()== btnTec) {
+			this.ocultarPnls();
+			pnlContenedor.setPreferredSize(new Dimension(480, 158*noticias.getNotiTec().size()));
+			this.pnlTec.setVisible(true);
+		}
+		
+		else if(e.getSource()== btnActualizar) {
+			this.actualizar();
+		}
+	}
+}

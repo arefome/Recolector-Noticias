@@ -2,7 +2,7 @@ package logica;
 
 import java.awt.EventQueue;
 
-import vista.VentanaU;
+import vista.VentanaLogin;
 
 public class Principal {
 
@@ -12,7 +12,7 @@ public class Principal {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaU frame = new VentanaU();
+					VentanaLogin frame = new VentanaLogin();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
